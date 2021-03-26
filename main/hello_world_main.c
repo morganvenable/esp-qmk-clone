@@ -13,6 +13,7 @@
 #include "esp_system.h"
 #include "esp_spi_flash.h"
 
+#include "keyboard.h"
 
 void app_main(void)
 {
@@ -40,7 +41,7 @@ void app_main(void)
     }
 
 
-    //keyboard_task();
+    keyboard_task();
 
     printf("Restarting now.\n");
     fflush(stdout);
