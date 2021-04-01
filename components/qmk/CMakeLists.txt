@@ -3,20 +3,18 @@ set(QMK_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/qmk)
 # If you need to access some esp-idf component from qmk, you can
 # add it as a REQUIRES here, and the appropriate include directory
 # will be passed to the qmk build.
-#
-# If some esp-idf component needs to access something in qmk, you can
-# add the appropriate include directory in INCLUDE_DIRS here, and then
-# any component that REQUIRES this component will get the include
-# directory.
+
 idf_component_register(INCLUDE_DIRS ${QMK_ROOT}/tmk_core/common
-                       REQUIRES fatfs freertos)
+                       REQUIRES fatfs)
 
 string(REPLACE "/" "_" FLATTENED_KEYBOARD ${QMK_KEYBOARD})
 set(QMK_STATIC_LIBRARY ${QMK_ROOT}/${FLATTENED_KEYBOARD}_${QMK_LAYOUT}.a)
 
+# The following is needed because tinyusb includes some freertos headers without
+# the freertos directory prefix. But ORIG_INCLUDE_PATH has the correct include
+# directory to use for this case.
 idf_component_get_property(
     FREERTOS_ORIG_INCLUDE_PATH freertos ORIG_INCLUDE_PATH)
-
 target_include_directories(${COMPONENT_TARGET} INTERFACE "${FREERTOS_ORIG_INCLUDE_PATH}")
 
 # Call the qmk build, passing in all of the include directories that have been configured
@@ -31,9 +29,8 @@ ExternalProject_Add(qmk_external
    INSTALL_COMMAND ""
 )
 
-add_library(qmk_lib INTERFACE)
-target_link_libraries(qmk_lib INTERFACE ${QMK_STATIC_LIBRARY})
-
-add_dependencies(${COMPONENT_LIB} qmk_external)
+add_library(qmk_lib IMPORTED STATIC)
+add_dependencies(qmk_lib qmk_external)
+set_target_properties(qmk_lib PROPERTIES IMPORTED_LOCATION ${QMK_STATIC_LIBRARY})
 
 target_link_libraries(${COMPONENT_LIB} INTERFACE qmk_lib)
