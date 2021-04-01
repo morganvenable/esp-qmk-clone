@@ -7,30 +7,12 @@
    CONDITIONS OF ANY KIND, either express or implied.
 */
 #include <stdio.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "esp_system.h"
-#include "esp_spi_flash.h"
-#include "esp_log.h"
-
-#include "bsp/board.h"
-
-#include "keyboard.h"
-
-#include "gpio.h"
-
 
 int idf_main(void);
 
 void app_main(void)
 {
-    //board_init();
-    //tud_task();
     idf_main();
 }
 
-void blah() {
-    board_init();
-    tud_task();
-}
+

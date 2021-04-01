@@ -9,10 +9,15 @@ set(QMK_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/qmk)
 # any component that REQUIRES this component will get the include
 # directory.
 idf_component_register(INCLUDE_DIRS ${QMK_ROOT}/tmk_core/common
-                       REQUIRES fatfs tinyusb_custom)
+                       REQUIRES fatfs freertos)
 
 string(REPLACE "/" "_" FLATTENED_KEYBOARD ${QMK_KEYBOARD})
 set(QMK_STATIC_LIBRARY ${QMK_ROOT}/${FLATTENED_KEYBOARD}_${QMK_LAYOUT}.a)
+
+idf_component_get_property(
+    FREERTOS_ORIG_INCLUDE_PATH freertos ORIG_INCLUDE_PATH)
+
+target_include_directories(${COMPONENT_TARGET} INTERFACE "${FREERTOS_ORIG_INCLUDE_PATH}")
 
 # Call the qmk build, passing in all of the include directories that have been configured
 # for this esp-idf component.

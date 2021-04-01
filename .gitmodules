@@ -1,7 +1,3 @@
 [submodule "components/qmk/qmk"]
 	path = components/qmk/qmk
 	url = https://github.com/qmk/qmk_firmware.git
-[submodule "components/tinyusb/tinyusb"]
-	path = components/tinyusb_custom/tinyusb
-	url = https://github.com/espressif/tinyusb.git
-	branch = esp-based_on_9f0b401f
