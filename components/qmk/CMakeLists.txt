@@ -9,7 +9,7 @@ set(QMK_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/qmk)
 # any component that REQUIRES this component will get the include
 # directory.
 idf_component_register(INCLUDE_DIRS ${QMK_ROOT}/tmk_core/common
-                       REQUIRES fatfs)
+                       REQUIRES fatfs tinyusb_custom)
 
 string(REPLACE "/" "_" FLATTENED_KEYBOARD ${QMK_KEYBOARD})
 set(QMK_STATIC_LIBRARY ${QMK_ROOT}/${FLATTENED_KEYBOARD}_${QMK_LAYOUT}.a)
