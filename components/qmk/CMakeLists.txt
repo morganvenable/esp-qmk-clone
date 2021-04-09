@@ -33,4 +33,8 @@ add_library(qmk_lib IMPORTED STATIC)
 add_dependencies(qmk_lib qmk_external)
 set_target_properties(qmk_lib PROPERTIES IMPORTED_LOCATION ${QMK_STATIC_LIBRARY})
 
+# The static library for qmk needs to be linked in using the --whole-archive option,
+# to ensure that all strong symbols override weak symbols.
+target_link_libraries(${COMPONENT_LIB} INTERFACE "-Wl,--whole-archive")
 target_link_libraries(${COMPONENT_LIB} INTERFACE qmk_lib)
+target_link_libraries(${COMPONENT_LIB} INTERFACE "-Wl,--no-whole-archive")
